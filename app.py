@@ -28,8 +28,8 @@ class Application(tk.Tk):
         self.format = tk.StringVar(value="JPG")
         self.quality = tk.StringVar(value="95")
         self.size = tk.StringVar(value="0")
-        self.target = tk.StringVar(value="10240")
-        self.preset = tk.StringVar(value="고화질 공유용 (최대 10MB)")
+        self.target = tk.StringVar(value="8192")
+        self.preset = tk.StringVar(value="고화질 공유용 (최대 8MB)")
         self.status = tk.StringVar(value="변환할 사진을 추가하세요.")
         frame = ttk.Frame(self, padding=20)
         frame.pack(fill="both", expand=True)
@@ -57,7 +57,7 @@ class Application(tk.Tk):
         preset_row.pack(fill="x", pady=(12, 0))
         ttk.Label(preset_row, text="용도별 설정").pack(side="left", padx=(0, 8))
         preset = ttk.Combobox(preset_row, textvariable=self.preset, state="readonly", width=24,
-                              values=["고화질 공유용 (최대 10MB)", "고화질 (용량 제한 없음)", "직접 설정", "카카오톡 공유용 (작은 용량)", "작은 파일로 공유", "20MB 이하로 줄이기"])
+                              values=["고화질 공유용 (최대 8MB)", "고화질 (용량 제한 없음)", "직접 설정", "카카오톡 공유용 (작은 용량)", "작은 파일로 공유", "20MB 이하로 줄이기"])
         preset.pack(side="left")
         preset.bind("<<ComboboxSelected>>", self.apply_preset)
         ttk.Label(preset_row, text="사진당 목표 KB (0=제한 없음)").pack(side="left", padx=8)
@@ -115,7 +115,7 @@ class Application(tk.Tk):
 
     def apply_preset(self, event=None):
         presets = {"카카오톡 공유용 (작은 용량)": (85, 1920, 1024), "작은 파일로 공유": (75, 1280, 300),
-                   "20MB 이하로 줄이기": (95, 0, 20480), "고화질 공유용 (최대 10MB)": (95, 0, 10240),
+                   "20MB 이하로 줄이기": (95, 0, 20480), "고화질 공유용 (최대 8MB)": (95, 0, 8192),
                    "고화질 (용량 제한 없음)": (95, 0, 0)}
         if self.preset.get() in presets:
             quality, size, target = presets[self.preset.get()]
