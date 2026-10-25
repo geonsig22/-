@@ -14,6 +14,10 @@ class Application(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("사진 일괄 변환기")
+        asset_dir = Path(__file__).resolve().parent / "assets"
+        if (asset_dir / "photobatch.png").exists():
+            self.window_icon = tk.PhotoImage(file=str(asset_dir / "photobatch.png"))
+            self.iconphoto(True, self.window_icon)
         self.geometry("780x620")
         self.minsize(680, 540)
         self.files = []
@@ -30,7 +34,8 @@ class Application(tk.Tk):
         frame = ttk.Frame(self, padding=20)
         frame.pack(fill="both", expand=True)
         ttk.Label(frame, text="사진 일괄 변환기", font=("맑은 고딕", 20, "bold")).pack(anchor="w")
-        ttk.Label(frame, text="DNG → JPG · 사진 크기 조절 · 원본 보존").pack(anchor="w", pady=(4, 14))
+        ttk.Label(frame, text="DNG → JPG · 사진 크기 조절 · 원본 보존").pack(anchor="w", pady=(4, 4))
+        ttk.Label(frame, text="원본은 수정하지 않습니다. 결과는 새 파일로 저장합니다.", foreground="#087f5b").pack(anchor="w", pady=(0, 10))
         bar = ttk.Frame(frame)
         bar.pack(fill="x")
         self.controls = []
@@ -200,6 +205,9 @@ if __name__ == "__main__":
         import tempfile
         import rawpy
         from PIL import Image
+        asset_dir = Path(__file__).resolve().parent / "assets"
+        if getattr(sys, "frozen", False) and not (asset_dir / "photobatch.png").is_file():
+            raise RuntimeError("Packaged icon is missing")
         with tempfile.TemporaryDirectory() as folder:
             source = Path(folder) / "test.png"
             Image.new("RGB", (32, 16), "red").save(source)
